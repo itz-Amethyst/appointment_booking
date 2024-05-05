@@ -14,6 +14,7 @@ EMAIL_PORT = '2525'
 EMAIL_USE_TLS = True
 Email_USE_SSL = False
 
+# Todo save order details in session or cookie
 USE_HTTP_ONLY_COOKIE = True
 COOKIE_NAME = 'jwt_info'
 COOKIE_SAMESITE = "Lax"
@@ -22,6 +23,6 @@ MAX_FILE_SIZE = 20
 
 DEFAULT_FROM_EMAIL = 'from@milad.com'
 
-CELERY_BROKER_BACKEND = "memory"
-CELERY_TASK_ALWAYS_EAGER = True
-CELERY_TASK_EAGER_PROPAGATES = True
+# CELERY_BROKER_BACKEND = "memory"
+# CELERY_TASK_ALWAYS_EAGER = True
+# CELERY_TASK_EAGER_PROPAGATES = True

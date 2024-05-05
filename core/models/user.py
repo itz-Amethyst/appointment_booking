@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
-from rest_framework_simplejwt.tokens import RefreshToken
+# from rest_framework_simplejwt.tokens import RefreshToken
 
 
 
@@ -55,12 +55,12 @@ class User(AbstractUser):
             ),
         ]
 
-    def generate_token( self ):
-        refresh = RefreshToken.for_user(self)
-        return {
-            'refresh': str(refresh) ,
-            'access': str(refresh.access_token)
-        }
+    # def generate_token( self ):
+    #     refresh = RefreshToken.for_user(self)
+    #     return {
+    #         'refresh': str(refresh) ,
+    #         'access': str(refresh.access_token)
+    #     }
 
 
     def save( self , *args: List , **kwargs: Dict ) -> None:

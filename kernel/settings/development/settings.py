@@ -22,13 +22,10 @@ ALLOWED_HOSTS +=  [host.strip() for host in env("ALLOWED_HOSTS").split(',')]
 
 
 INSTALLED_APPS += [
-    "djoser" ,
-    "rest_framework_simplejwt",
-    "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
     "corsheaders",
-    "django_celery_results",
-    "django_celery_beat",
+    # "django_celery_results",
+    # "django_celery_beat",
 ]
 
 MIDDLEWARE += [

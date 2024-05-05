@@ -1,5 +1,4 @@
 from kernel.settings.config.setup import env
-# import kernel.settings.third_party
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")

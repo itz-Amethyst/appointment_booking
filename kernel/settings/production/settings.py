@@ -19,10 +19,10 @@ ALLOWED_HOSTS +=  [host.strip() for host in env("ALLOWED_HOSTS").split(',')]
 # for host in env("ALLOWED_HOSTS").split(","):
 #     ALLOWED_HOSTS.append(host)
 
-INSTALLED_APPS += [
-    'djoser',
-
-]
+# INSTALLED_APPS += [
+#     'djoser',
+#
+# ]
 
 MIDDLEWARE += [
     'kernel.middleware.security_header_middleware.SecurityHeadersMiddleware'

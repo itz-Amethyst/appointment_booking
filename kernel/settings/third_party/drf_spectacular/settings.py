@@ -1,8 +1,8 @@
 from kernel.settings.third_party.rest_framework.settings import REST_FRAMEWORK
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Channel Subscriber API',
-    'DESCRIPTION': 'This is a Channel Subscriber official API documentation.',
+    'TITLE': 'Appointment Booking API',
+    'DESCRIPTION': 'This is a Appointment Booking official API documentation.',
     'VERSION': '1.0.0',
     # 'SERVE_INCLUDE_SCHEMA': False
 }
