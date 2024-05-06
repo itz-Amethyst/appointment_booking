@@ -1,2 +1,3 @@
-from channel_subscriber.models.channel import Channel
-from channel_subscriber.models.subscription import Subscription
+from appointment_booking.models.main import Company
+from appointment_booking.models.service import Service
+from appointment_booking.models.branch import Branch
