@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 class Presentation_Choices(models.TextChoices):
     """
-    AuthProviders model represents various authentication providers.
+    Presentation_Choices model represents various Presentation choices.
 
     Attributes:
         IN_PERSON (str, str)

@@ -2,10 +2,11 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import JSONField
-from appointment_booking.models import Company
+from appointment_booking.models.company import Company
+from core.models.core import CoreModel
 
 
-class Branch(models.Model):
+class Branch(CoreModel):
     """
     The `Branch` model represents a specific location or branch with various attributes.
 

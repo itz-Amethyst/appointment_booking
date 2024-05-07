@@ -4,11 +4,12 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from typing import  Union
 
-from appointment_booking.models import Company
+from appointment_booking.models.company import Company
 from appointment_booking.models.helper.enums import Presentation_Choices
+from core.models.core import CoreModel
 
 
-class Service(models.Model):
+class Service(CoreModel):
     """
     The `Service` model represents a service offering with various attributes and relationships.
 
@@ -19,7 +20,7 @@ class Service(models.Model):
         is_active (BooleanField): Indicates whether the service is active.
         can_accept_user_custom_time (BooleanField): Indicates if the service allows custom user scheduling.
         has_quantity (BooleanField): Indicates whether the service involves a quantity.
-        price (DecimalField): The price of the service, specified with two decimal places.
+        price (BigIntegerField): The price of the service.
         presentation (CharField): Represents the mode of the service (e.g., in-person, online, or hybrid).
         assigned_staffs (ForeignKey): A reference to a user (staff) assigned to the service. It can be null.
         sub_service (ForeignKey): Self-referencing relation to indicate a sub-service. It can also be null.
@@ -75,9 +76,7 @@ class Service(models.Model):
         db_column = "has_quantity"
     )
 
-    price: models.DecimalField = models.DecimalField(
-        max_digits = 10 ,
-        decimal_places = 2 ,
+    price: models.BigIntegerField = models.BigIntegerField(
         verbose_name = _("Price") ,
         help_text = _("Price of the service") ,
         db_column = "price" ,
@@ -85,9 +84,9 @@ class Service(models.Model):
 
     presentation: models.CharField = models.CharField(
         max_length = 20 ,
-        choices = Presentation_Choices ,
+        choices = Presentation_Choices.choices ,
         # Todo: Doubt?!
-        default = Presentation_Choices.IN_PERSON.value,
+        default = Presentation_Choices.IN_PERSON,
         verbose_name = _("Presentation") ,
         help_text = _("Presentation mode of the service") ,
         db_column = "presentation"
