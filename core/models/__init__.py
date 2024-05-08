@@ -1,2 +1,2 @@
 from .user import User
-from .profile import Profile
+from .verification_code import VerificationCode
