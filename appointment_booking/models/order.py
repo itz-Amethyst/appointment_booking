@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from appointment_booking.models.helper.enums.order_status_choices import Order_Status_Choices
 from core.models.core import CoreModel
 
-available_choices = ', '.join([str(choice[1]) for choice in Order_Status_Choices.choices])
 
 class Order(CoreModel):
     """
@@ -66,7 +65,7 @@ class Order(CoreModel):
                 check = models.Q(payment_status__in = list(Order_Status_Choices.values())) ,
                 name = "valid_payment_status" ,
                 violation_error_message = _("Payment status must be one of the following: {choices}.").format(
-                    choices = available_choices) ,
+                    choices = Order_Status_Choices.get_available_choices()) ,
             ) ,
             models.CheckConstraint(
                 check=models.Q(final_price__gte=0),
@@ -92,7 +91,7 @@ class Order(CoreModel):
 
         if self.payment_status not in dict(Order_Status_Choices.choices):
             raise ValidationError(
-                _(f'The status of the answer must be: {available_choices} .') ,
+                _(f'The status of the answer must be: {Order_Status_Choices.get_available_choices()} .') ,
                 code = 'invalid'
             )
 

@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from core.models.helper.enums.base_textchoice import BaseTextChoices
 
-class Presentation_Choices(models.TextChoices):
+
+class Presentation_Choices(BaseTextChoices):
     """
     Presentation_Choices model represents various Presentation choices.
 

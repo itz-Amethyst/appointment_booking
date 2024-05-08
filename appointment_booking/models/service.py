@@ -130,6 +130,12 @@ class Service(CoreModel):
                 name = "no_self-reference_sub_service" ,
                 violation_error_message = _("Sub-service cannot reference itself.") ,
             ) ,
+            models.CheckConstraint(
+                check = models.Q(payment_status__in = list(Presentation_Choices.values())) ,
+                name = "valid_payment_status" ,
+                violation_error_message = _("Payment status must be one of the following: {choices}.").format(
+                    choices = Presentation_Choices.get_available_choices()) ,
+            ) ,
         ]
 
     def clean( self ) -> None:
@@ -154,6 +160,12 @@ class Service(CoreModel):
         #             "sub_service": _(
         #                 "A service can only have one level of sub-service. Nested sub-services are not allowed.")
         #         })
+
+        if self.presentation not in dict(Presentation_Choices.choices):
+            raise ValidationError(
+                _(f'The status of the answer must be: {Presentation_Choices.get_available_choices()} .') ,
+                code = 'invalid'
+            )
 
         super().clean()
 

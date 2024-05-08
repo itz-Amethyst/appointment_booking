@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from core.models.helper.enums.base_textchoice import BaseTextChoices
 
-class Order_Status_Choices(models.TextChoices):
+
+class Order_Status_Choices(BaseTextChoices):
     """
     Order_Status_Choices model represents various Order statuses.
 
