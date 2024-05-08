@@ -1,9 +1,13 @@
 from typing import Dict , List
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
 # from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -28,12 +32,30 @@ class User(AbstractUser):
         validators=[validate_email]
     )
 
+    phone_number: models.BigIntegerField = models.BigIntegerField(
+        verbose_name = _("Phone Number") ,
+        help_text = _("User's phone number.") ,
+        unique = True ,  # Ensure unique phone numbers
+        blank = False ,  # Phone number must not be empty
+        error_messages = {
+            'unique': _("This phone number is already associated with another user.") ,
+        }
+    )
+
+    country: models.CharField = models.CharField(
+        verbose_name = _("Country") ,
+        max_length = 40 ,
+        help_text = _("User's country.") ,
+        blank = True ,  # Country is optional
+    )
+
 
     class Meta:
         db_table: str = "users"
         db_table_comment: str = "This table contains all users in the system."
         verbose_name: str = _("User")
         verbose_name_plural: str = _("Users")
+        ordering = ["-date_joined"]
 
         constraints: list = [
             models.CheckConstraint(
@@ -53,14 +75,36 @@ class User(AbstractUser):
                 name="last_login_after_date_joined",
                 violation_error_message=_("The last login must be after the date joined.")
             ),
+            models.CheckConstraint(
+                check = models.Q(phone_number__gte = 0) ,
+                name = "phone_number_positive" ,
+                violation_error_message = _("Phone number must be a positive integer.") ,
+            ) ,
         ]
 
-    # def generate_token( self ):
-    #     refresh = RefreshToken.for_user(self)
-    #     return {
-    #         'refresh': str(refresh) ,
-    #         'access': str(refresh.access_token)
-    #     }
+    def generate_token( self ):
+        refresh = RefreshToken.for_user(self)
+        return {
+            'refresh': str(refresh) ,
+            'access': str(refresh.access_token)
+        }
+
+    def clean( self ) -> None:
+        """
+        Custom validation logic to ensure data integrity.
+        """
+        if self.phone_number < 0:
+            raise ValidationError({
+                "phone_number": _("Phone number must be a positive integer.") ,
+            })
+
+        # Optional country validation
+        if self.country and not self.country.isalpha():
+            raise ValidationError({
+                "country": _("Country must only contain alphabetic characters.") ,
+            })
+
+        super().clean()
 
 
     def save( self , *args: List , **kwargs: Dict ) -> None:
