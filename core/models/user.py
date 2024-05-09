@@ -32,11 +32,12 @@ class User(AbstractUser):
         validators=[validate_email]
     )
 
-    phone_number: models.BigIntegerField = models.BigIntegerField(
+    phone_number: models.CharField = models.CharField(
         verbose_name = _("Phone Number") ,
         help_text = _("User's phone number.") ,
         unique = True ,  # Ensure unique phone numbers
         blank = False ,  # Phone number must not be empty
+        null = True,  # Initially allow null
         error_messages = {
             'unique': _("This phone number is already associated with another user.") ,
         }
@@ -48,6 +49,7 @@ class User(AbstractUser):
         help_text = _("User's country.") ,
         blank = True ,  # Country is optional
     )
+    REQUIRED_FIELDS =  ['phone_number', 'email',]
 
 
     class Meta:
@@ -76,9 +78,9 @@ class User(AbstractUser):
                 violation_error_message=_("The last login must be after the date joined.")
             ),
             models.CheckConstraint(
-                check = models.Q(phone_number__gte = 0) ,
-                name = "phone_number_positive" ,
-                violation_error_message = _("Phone number must be a positive integer.") ,
+                check = models.Q(phone_number__isnull = False) ,
+                name = "phone_number_null_check" ,
+                violation_error_message = _("Phone number cannot be null.") ,
             ) ,
         ]
 
@@ -93,15 +95,16 @@ class User(AbstractUser):
         """
         Custom validation logic to ensure data integrity.
         """
-        if self.phone_number < 0:
-            raise ValidationError({
-                "phone_number": _("Phone number must be a positive integer.") ,
-            })
 
         # Optional country validation
         if self.country and not self.country.isalpha():
             raise ValidationError({
                 "country": _("Country must only contain alphabetic characters.") ,
+            })
+
+        if self.phone_number is None:
+            raise ValidationError({
+                "phone_number": _("Phone number must not be null or empty.") ,
             })
 
         super().clean()
