@@ -4,22 +4,22 @@ from django.contrib.auth.password_validation import validate_password
 
 
 class Command(BaseCommand):
-    help = 'Create initial Admin if none exist'
+    help = 'Create initial staff if none exist'
 
     def handle(self, *args, **options):
         User = get_user_model()
         if User.objects.filter(is_staff=True, is_superuser=False):
-            self.stdout.write(self.style.ERROR('Admin User already exist. No action required.'))
+            self.stdout.write(self.style.ERROR('staff User already exist. No action required.'))
         else:
-            self.create_initial_admin()
-            self.stdout.write(self.style.SUCCESS('Successfully created Admin User'))
+            self.create_initial_staff()
+            self.stdout.write(self.style.SUCCESS('Successfully created staff User'))
 
-    def create_initial_admin(self):
+    def create_initial_staff(self):
         User = get_user_model()
         while True:
-            email = input('Enter admin email: ')
-            username = input('Enter admin username: ')
-            password = input('Enter admin password: ')
+            email = input('Enter staff email: ')
+            username = input('Enter staff username: ')
+            password = input('Enter staff password: ')
 
             # Check if a user with the given username already exists
             if User.objects.filter(username=username).exists():
