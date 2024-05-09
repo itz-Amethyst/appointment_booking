@@ -14,30 +14,30 @@ DJOSER = {
     'ACTIVATION_URL': 'auth/activate/?uid={uid}&token={token}',
 
     'SERIALIZERS':{
-        'user_create_password_retype': 'core.serializers.Djoser.UserCreateSerializer',
+        'user_create_password_retype': 'core.api.serializers.Djoser.UserCreateSerializer',
         # Note this api will apply to all patch's like put delete get ... when ever you define fields it will apply on all endpoints
-        'user': 'core.serializers.Djoser.UserSerializer',
+        'user': 'core.api.serializers.Djoser.UserSerializer',
         #! Can change later
-        'current_user': 'core.serializers.Djoser.UserSerializer',
+        'current_user': 'core.api.serializers.Djoser.UserSerializer',
 
-        "activation": "core.serializers.Djoser.ActivationSerializer",
+        "activation": "core.api.serializers.Djoser.ActivationSerializer",
 
-        "password_reset_confirm": "core.serializers.Djoser.PasswordResetConfirmSerializer",
+        "password_reset_confirm": "core.api.serializers.Djoser.PasswordResetConfirmSerializer",
 
-        "password_reset_confirm_retype": "core.serializers.Djoser.PasswordResetConfirmRetypeSerializer",
+        "password_reset_confirm_retype": "core.api.serializers.Djoser.PasswordResetConfirmRetypeSerializer",
 
         # Some things wrong with this checked everything
-        "username_reset_confirm": "core.serializers.Djoser.UsernameResetConfirmSerializer",
+        "username_reset_confirm": "core.api.serializers.Djoser.UsernameResetConfirmSerializer",
 
-        "username_reset_confirm_retype": "core.serializers.Djoser.UsernameResetConfirmRetypeSerializer",
+        "username_reset_confirm_retype": "core.api.serializers.Djoser.UsernameResetConfirmRetypeSerializer",
 
         # 'user_delete': 'djoser.serializers.UserDeleteSerializer',
     },
 
     'EMAIL': {
-        'activation': 'core.serializers.Djoser.ActivationEmail' ,
-        'password_reset': 'core.serializers.Djoser.PasswordResetEmail' ,
-        'username_reset': 'core.serializers.Djoser.UsernameResetEmail'
+        'activation': 'core.api.serializers.Djoser.ActivationEmail' ,
+        'password_reset': 'core.api.serializers.Djoser.PasswordResetEmail' ,
+        'username_reset': 'core.api.serializers.Djoser.UsernameResetEmail'
     } ,
 
 }

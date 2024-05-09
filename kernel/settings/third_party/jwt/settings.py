@@ -1,10 +1,10 @@
 from datetime import timedelta
 from kernel.settings.development.configs import USE_HTTP_ONLY_COOKIE
 
-# SIMPLE_JWT = {
-#     "AUTH_HEADER_TYPES": ("JWT",),
-#     "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
-# }
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
+}
 
 # Check if USE_HTTP_ONLY_COOKIE is True
 # if USE_HTTP_ONLY_COOKIE:
