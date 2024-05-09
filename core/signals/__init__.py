@@ -1,1 +1,2 @@
-from core.signals.profile import create_profile, update_profile_on_subscription_created, update_profile_on_subscription_deleted
+# from core.signals.profile import create_profile, update_profile_on_subscription_created, update_profile_on_subscription_deleted
+from core.signals.user_phone_validation import pre_save_user
