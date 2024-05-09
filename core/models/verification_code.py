@@ -52,7 +52,7 @@ class VerificationCode(CoreModel):
     section: models.CharField = models.CharField(
         _("Section") ,
         max_length = 20 ,
-        choices = Section_Choices.SECTION_CHOICES ,
+        choices = Section_Choices.choices ,
         default = Section_Choices.RESET_PASSWORD ,
         help_text = _("The section or purpose for this verification code.") ,
         db_column = "section" ,
@@ -66,9 +66,9 @@ class VerificationCode(CoreModel):
 
         constraints = [
             models.CheckConstraint(
-                check = models.Q(payment_status__in = list(Section_Choices.values())) ,
-                name = "valid_payment_status" ,
-                violation_error_message = _("Payment status must be one of the following: {choices}.").format(
+                check = models.Q(section__in = [choice.value for choice in Section_Choices]) ,
+                name = "valid_section_status" ,
+                violation_error_message = _("Section Status must be one of the following: {choices}.").format(
                     choices = Section_Choices.get_available_choices()) ,
             ) ,
             models.UniqueConstraint(

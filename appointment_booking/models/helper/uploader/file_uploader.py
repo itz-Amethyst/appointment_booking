@@ -1,7 +1,7 @@
 import uuid
 import os
 
-from appointment_booking.models.generic_picture import Generic_Picture
+# from appointment_booking.models.generic_picture import Generic_Picture
 
 
 # Custom function to generate the upload path

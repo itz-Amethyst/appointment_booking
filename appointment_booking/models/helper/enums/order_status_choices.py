@@ -17,12 +17,16 @@ class Order_Status_Choices(BaseTextChoices):
         None
     """
 
-    APPROVED = 'approved'
-    REJECTED = 'rejected'
-    PENDING = 'pending'
+    # APPROVED = 'approved'
+    # REJECTED = 'rejected'
+    # PENDING = 'pending'
+    #
+    # ORDER_STATUS_CHOICES = [
+    #     (APPROVED , _("Approved")) ,
+    #     (REJECTED , _("Rejected")) ,
+    #     (PENDING , _("Pending")) ,
+    # ]
 
-    ORDER_STATUS_CHOICES = [
-        (APPROVED , _("Approved")) ,
-        (REJECTED , _("Rejected")) ,
-        (PENDING , _("Pending")) ,
-    ]
+    APPROVED = 'approved', _("Approved")
+    REJECTED = 'rejected', _("Rejected")
+    PENDING = 'pending', _("Pending")

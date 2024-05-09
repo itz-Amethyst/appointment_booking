@@ -54,7 +54,7 @@ class Coupon(CoreModel):
     usable_count: models.IntegerField = models.IntegerField(
         verbose_name=_("Usable Count"),
         help_text=_("The number of times the coupon can be used."),
-        db_column="Usable_count",
+        db_column="usable_count",
     )
 
     defined_by: models.ForeignKey[settings.AUTH_USER_MODEL] = models.ForeignKey(
@@ -94,7 +94,7 @@ class Coupon(CoreModel):
                 violation_error_message=_("Discount percentage must be between 0 and 100."),
             ),
             models.CheckConstraint(
-                check=models.Q(Usable_count__gte=0),
+                check=models.Q(usable_count__gte=0),
                 name="Usable_count_non_negative",
                 violation_error_message=_("Usable count must be non-negative."),
             ),

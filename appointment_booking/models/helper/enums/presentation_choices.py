@@ -17,12 +17,16 @@ class Presentation_Choices(BaseTextChoices):
         None
     """
 
-    IN_PERSON = 'in_person'
-    ONLINE = 'online'
-    HYBRID = 'hybrid'
+    # IN_PERSON = 'in_person'
+    # ONLINE = 'online'
+    # HYBRID = 'hybrid'
 
-    PRESENTATION_CHOICES = [
-        (IN_PERSON , _("In-Person")) ,
-        (ONLINE , _("Online")) ,
-        (HYBRID , _("Hybrid")) ,
-    ]
+    # PRESENTATION_CHOICES = [
+    #     (IN_PERSON , _("In-Person")) ,
+    #     (ONLINE , _("Online")) ,
+    #     (HYBRID , _("Hybrid")) ,
+    # ]
+
+    IN_PERSON = 'in_person', _("In-Person")
+    ONLINE = 'online', _("Online")
+    HYBRID = 'hybrid', _("Hybrid")

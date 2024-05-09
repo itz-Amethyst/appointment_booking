@@ -83,7 +83,7 @@ class Booking(models.Model):
 
     payment_status: models.CharField = models.CharField(
         max_length = 10 ,
-        choices = Order_Status_Choices.ORDER_STATUS_CHOICES ,
+        choices = Order_Status_Choices.choices ,
         default = Order_Status_Choices.PENDING ,
         verbose_name = _("Payment Status") ,
         help_text = _("Status of the payment.") ,
@@ -103,8 +103,8 @@ class Booking(models.Model):
                 violation_error_message=_("Start time must be before end time."),
             ),
             models.CheckConstraint(
-                check = models.Q(payment_status__in = list(Order_Status_Choices.values())) ,
-                name = "valid_payment_status" ,
+                check = models.Q(payment_status__in = [choice.value for choice in Order_Status_Choices]) ,
+                name = "valid_payment_status_booking" ,
                 violation_error_message = _("Payment status must be one of the following: {choices}.").format(
                     choices = Order_Status_Choices.get_available_choices()) ,
             ) ,
@@ -138,7 +138,7 @@ class Booking(models.Model):
 
         if self.payment_status not in dict(Order_Status_Choices.choices):
             raise ValidationError(
-                _(f'The status of the answer must be: {Order_Status_Choices.get_available_choices()} .') ,
+                _(f'The status of the booking must be: {Order_Status_Choices.get_available_choices()} .') ,
                 code = 'invalid'
             )
 

@@ -38,13 +38,14 @@ class Staff_Times(CoreModel):
         verbose_name_plural = _("Staff_Times")
 
         constraints = [
-            models.CheckConstraint(
-                check=models.Q(
-                    user__is_staff=True
-                ),
-                name="user_is_staff",
-                violation_error_message=_("User must be a staff member.")
-            ),
+            #! Django cannot handle cross table constraints
+            # models.CheckConstraint(
+            #     check=models.Q(
+            #         user__is_staff=True
+            #     ),
+            #     name="user_is_staff",
+            #     violation_error_message=_("User must be a staff member.")
+            # ),
             # models.CheckConstraint(
             #     check = models.Q(
             #         working_hours__has_keys = ['sunday' , 'monday' , 'tuesday' , 'wednesday', 'saturday']

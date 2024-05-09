@@ -16,12 +16,16 @@ class Section_Choices(BaseTextChoices):
         None
     """
 
-    RESET_PASSWORD = 'reset_password'
-    ACTIVATION = 'activation'
-    RESET_USERNAME = 'reset_username'
+    # RESET_PASSWORD = 'reset_password'
+    # ACTIVATION = 'activation'
+    # RESET_USERNAME = 'reset_username'
+    #
+    # SECTION_CHOICES = [
+    #     (RESET_PASSWORD , _('Reset Password')) ,
+    #     (ACTIVATION , _('Activation')) ,
+    #     (RESET_USERNAME , _('Reset Username')) ,
+    # ]
 
-    SECTION_CHOICES = [
-        (RESET_PASSWORD , _('Reset Password')) ,
-        (ACTIVATION , _('Activation')) ,
-        (RESET_USERNAME , _('Reset Username')) ,
-    ]
+    RESET_PASSWORD = 'reset_password' , _('Reset Password')
+    ACTIVATION = 'activation' , _('Activation')
+    RESET_USERNAME = 'reset_username' , _('Reset Username')

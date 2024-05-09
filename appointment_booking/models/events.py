@@ -60,9 +60,8 @@ class Events(CoreModel):
         constraints = [
             models.CheckConstraint(
                 check = models.Q(
-                    off_date__gt=ExpressionWrapper(
-                        timezone.now().date(),
-                        output_field = DateField()
+                    off_date__gt=models.ExpressionWrapper(models.Value("NOW()"),
+                        output_field = models.DateField()
                     )
                 ),
                 name = "off_date_greater_than_today",

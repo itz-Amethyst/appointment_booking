@@ -99,7 +99,8 @@ class Service(CoreModel):
         related_name = "assigned_services" ,
         verbose_name = _("Assigned Staffs") ,
         help_text = _("Assigned staff for the service") ,
-        blank = True
+        blank = True,
+        null = True
     )
 
     sub_service: models.ForeignKey[Union['Service' , None]] = models.ForeignKey(
@@ -126,14 +127,14 @@ class Service(CoreModel):
                 violation_error_message = _("Price must be non-negative.")
             ) ,
             models.CheckConstraint(
-                check = models.Q(sub_service__isnull = True) | models.Q(sub_service__pk__ne = models.F('pk')) ,
+                check = models.Q(sub_service__isnull = True) | ~models.Q(sub_service = models.F('pk')) ,
                 name = "no_self-reference_sub_service" ,
                 violation_error_message = _("Sub-service cannot reference itself.") ,
             ) ,
             models.CheckConstraint(
-                check = models.Q(payment_status__in = list(Presentation_Choices.values())) ,
-                name = "valid_payment_status" ,
-                violation_error_message = _("Payment status must be one of the following: {choices}.").format(
+                check = models.Q(presentation__in = [choice.value for choice in Presentation_Choices]) ,
+                name = "valid_presentation_mode" ,
+                violation_error_message = _("Presentation mode must be one of the following: {choices}.").format(
                     choices = Presentation_Choices.get_available_choices()) ,
             ) ,
         ]
@@ -163,7 +164,7 @@ class Service(CoreModel):
 
         if self.presentation not in dict(Presentation_Choices.choices):
             raise ValidationError(
-                _(f'The status of the answer must be: {Presentation_Choices.get_available_choices()} .') ,
+                _(f'The presentation of the service must be: {Presentation_Choices.get_available_choices()} .') ,
                 code = 'invalid'
             )
 
