@@ -44,6 +44,8 @@ class Branch(CoreModel):
         verbose_name=_("Excluded Times"),
         help_text=_("Times when the location is closed or unavailable."),
         default=dict,
+        blank = True,
+        null = True,
         db_column="excluded_times"
     )
 
@@ -62,20 +64,21 @@ class Branch(CoreModel):
     )
 
     class Meta:
-        db_table = "locations"
-        verbose_name = _("Location")
-        verbose_name_plural = _("Locations")
+        db_table = "branch"
+        verbose_name = _("Branch")
+        verbose_name_plural = _("Branches")
         ordering = ["city", "location"]
 
         constraints = [
             models.CheckConstraint(
             check = models.Q(
                 working_hours__has_key = 'weekdays'
-            ) & models.Q(
-                working_hours__weekdays__has_key = 'start'
-            ) & models.Q(
-                working_hours__weekdays__has_key = 'end'
-            ) ,
+            ),
+            # & models.Q(
+            #     working_hours__weekdays__has_key = 'start'
+            # ) & models.Q(
+            #     working_hours__weekdays__has_key = 'end'
+            # ) ,
             name = "working_hours_weekdays_present" ,
             violation_error_message = _("Working hours must contain `weekdays` with `start` and `end`.")
             ) ,
@@ -116,17 +119,19 @@ class Branch(CoreModel):
             })
 
         # Validate `excluded_times`
-        if not isinstance(self.excluded_times, dict):
-            raise ValidationError({
-                "excluded_times": _("Excluded times must be a valid JSON object.")
-            })
+        if self.excluded_times and isinstance(self.excluded_times, dict) and len(self.excluded_times) > 0:
+            if not isinstance(self.excluded_times, dict):
+                raise ValidationError({
+                    "excluded_times": _("Excluded times must be a valid JSON object.")
+                })
 
         # Check for `weekdays` in `excluded_times`
-        if "weekdays" not in self.excluded_times or not all(
-                key in self.excluded_times["weekdays"] for key in weekday_structure):
-            raise ValidationError({
-                "working_hours": _("`excluded_times` must contain `weekdays` with `start` and `end` times.")
-            })
+        if self.excluded_times and isinstance(self.excluded_times, dict) and len(self.excluded_times) > 0:
+            if "weekdays" not in self.excluded_times or not all(
+                    key in self.excluded_times["weekdays"] for key in weekday_structure):
+                raise ValidationError({
+                    "working_hours": _("`excluded_times` must contain `weekdays` with `start` and `end` times.")
+                })
 
         # Optional check for weekends
         if "weekends" in self.working_hours and not all(
