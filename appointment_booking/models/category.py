@@ -61,6 +61,12 @@ class Category(CoreModel):
             ),
         ]
 
+    def update_total_services( self ):
+        """
+        Update the total_services count based on the number of associated services.
+        """
+        self.total_services = self.services.count()  # Get the count of associated services
+
     def clean(self) -> None:
         """
         Custom validation logic to ensure data integrity.
@@ -76,6 +82,11 @@ class Category(CoreModel):
             })
 
         super().clean()
+
+    def save(self, *args, **kwargs):
+        # Before saving, ensure total_services is accurate
+        self.update_total_services()
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         """
