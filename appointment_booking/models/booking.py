@@ -1,3 +1,5 @@
+from datetime import timedelta , datetime
+
 from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -7,6 +9,7 @@ from django.db.models import Q, F
 from appointment_booking.models.service import Service
 from appointment_booking.models.company import Company
 from appointment_booking.models.branch import Branch
+from appointment_booking.models.staff_times import Staff_Times
 
 from appointment_booking.models.helper.enums import Order_Status_Choices
 
@@ -119,9 +122,12 @@ class Booking(models.Model):
                 "start_time": _("Start time must be before end time."),
             })
 
-        if self.start_time < timezone.now():
+        # 20-second delay to the current time
+        future_time = timezone.now() - timedelta(seconds = 20)
+
+        if self.start_time < future_time:
             raise ValidationError({
-                "start_time": _("Start time must be in the future."),
+                "start_time": _("Start time must be at least 20 seconds in the future.") ,
             })
 
         # Check for overlaps with other bookings for the same service
@@ -135,6 +141,50 @@ class Booking(models.Model):
             raise ValidationError({
                 "start_time": _("This booking overlaps with an existing booking for the same service.")
             })
+
+        # Find the staff assigned to the service
+        assigned_staff = self.service_id.assigned_staffs  # Assuming each service has a related staff
+
+        if not assigned_staff:
+            raise ValidationError({
+                "service_id": _("No staff is assigned to this service.") ,
+            })
+
+        # Retrieve working hours from StaffTimes
+        staff_times = Staff_Times.objects.filter(user = assigned_staff).first()
+
+        if not staff_times:
+            raise ValidationError({
+                "service_id": _("Working hours for the assigned staff are not defined.") ,
+            })
+
+        # Validate that the booking times are within the staff's working hours
+        day_of_week = self.start_time.strftime('%A').lower()  # Get day of the week in lowercase
+        if day_of_week not in staff_times.working_hours:
+            raise ValidationError({
+                "start_time": _("Working hours for this day are not defined.") ,
+            })
+
+        day_times = staff_times.working_hours[day_of_week]
+        # Convert start and end times from JSON to time
+        start_str = day_times.get("start" , "")
+        end_str = day_times.get("end" , "")
+        if not start_str or not end_str:
+            raise ValidationError({
+                "start_time": _("Working hours are incomplete for this day.") ,
+            })
+
+        start_time = datetime.strptime(start_str , "%I:%M%p").time()
+        end_time = datetime.strptime(end_str , "%I:%M%p").time()
+        booking_start_time = self.start_time.time()
+        booking_end_time = self.end_time.time()
+
+        if not (start_time <= booking_start_time <= end_time) or not (start_time <= booking_end_time <= end_time):
+            raise ValidationError({
+                    "start_time": _("Booking times must be within the working hours of the assigned staff.") ,
+            })
+
+
 
         if self.payment_status not in dict(Order_Status_Choices.choices):
             raise ValidationError(
