@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Q
 from typing import List, Dict
-from my_app.managers import CompanyManager  # Custom manager
+# from my_app.managers import CompanyManager  # Custom manager
 
 from core.models.core import CoreModel
 
@@ -36,6 +36,7 @@ class Company(CoreModel):
         verbose_name=_("Branch Count"),
         help_text=_("Total number of branches"),
         validators=[MinValueValidator(0)],
+        default = 0,
         db_column="branch_count"
     )
 
@@ -43,6 +44,7 @@ class Company(CoreModel):
         verbose_name=_("Staff Count"),
         help_text=_("Total number of staff"),
         validators=[MinValueValidator(0)],
+        default = 0,
         db_column="staff_count"
     )
 
@@ -50,10 +52,11 @@ class Company(CoreModel):
         verbose_name=_("Total Books"),
         help_text=_("Total number of books"),
         validators=[MinValueValidator(0)],
-        db_column="total_book"
+        default = 0,
+        db_column="total_books"
     )
 
-    objects = CompanyManager()  # Assuming a custom manager
+    # objects = CompanyManager()
 
     class Meta:
         db_table = "company"
@@ -63,7 +66,7 @@ class Company(CoreModel):
 
         constraints = [
             models.CheckConstraint(
-                check=Q(branch_count__gte=0) & Q(staff_count__gte=0) & Q(total_book__gte=0),
+                check=Q(branch_count__gte=0) & Q(staff_count__gte=0) & Q(total_books__gte=0),
                 name="non_negative_values",
                 violation_error_message=_("Branch count, staff count, and total book must be non-negative."),
             ),
