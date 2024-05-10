@@ -59,11 +59,11 @@ class Generic_Picture(models.Model):
     def clean(self) -> None:
         """
         Custom validation logic to ensure data integrity.
-        """
-        if not self.picture_url:
-            raise ValidationError({
-                "picture_url": _("Picture URL must not be empty."),
-            })
+        # """
+        # if not self.picture_url:
+        #     raise ValidationError({
+        #         "picture_url": _("Picture URL must not be empty."),
+        #     })
 
         if not self.content_type:
             raise ValidationError({

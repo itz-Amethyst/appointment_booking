@@ -1,3 +1,5 @@
+from datetime import date
+from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import ExpressionWrapper , DateField
@@ -79,9 +81,17 @@ class Events(CoreModel):
                 "reason": _("Reason must not be empty.")
             })
 
-        if not isinstance(self.off_date, (str, models.DateField)):
+        if isinstance(self.off_date , str):
+            try:
+                # Attempt to convert the string to a date
+                datetime.strptime(self.off_date , "%Y-%m-%d").date()
+            except ValueError:
+                raise ValidationError({
+                    "off_date": _("Off date must be in YYYY-MM-DD format.")
+                })
+        elif not isinstance(self.off_date , date):
             raise ValidationError({
-                "off_date": _("Off date must be a valid date format.")
+                "off_date": _("Off date must be a valid date.")
             })
 
         if self.off_date <= timezone.now().date():

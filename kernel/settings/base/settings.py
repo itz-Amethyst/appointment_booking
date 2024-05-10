@@ -19,7 +19,6 @@ INSTALLED_APPS = [
     # Internal
     'core',
     'appointment_booking',
-    'tasks'
 ]
 
 REST_FRAMEWORK = {}

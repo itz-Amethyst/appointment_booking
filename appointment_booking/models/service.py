@@ -1,9 +1,11 @@
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from typing import  Union
 
+from appointment_booking.models.generic_picture import Generic_Picture
 from appointment_booking.models.company import Company
 from appointment_booking.models.helper.enums import Presentation_Choices
 from core.models.core import CoreModel
@@ -37,6 +39,8 @@ class Service(CoreModel):
             'unique': _("A service with this title already exists.") ,
         }
     )
+
+    # slug = models.SlugField()
 
     company_id: models.ForeignKey[Company] = models.ForeignKey(
         Company ,
@@ -80,6 +84,7 @@ class Service(CoreModel):
         verbose_name = _("Price") ,
         help_text = _("Price of the service") ,
         db_column = "price" ,
+        null = False
     )
 
     presentation: models.CharField = models.CharField(
@@ -114,6 +119,13 @@ class Service(CoreModel):
         blank = True
     )
 
+    def get_generic_pictures( self ):
+        """
+        Returns the Generic_Picture instances related to this Service.
+        """
+        content_type = ContentType.objects.get_for_model(Service)  # Get ContentType for this model
+        return Generic_Picture.objects.filter(content_type = content_type , object_id = self.id)
+
     class Meta:
         db_table = "services"
         verbose_name = _("Service")
@@ -143,7 +155,7 @@ class Service(CoreModel):
         """
         Custom validation logic to ensure data integrity.
         """
-        if self.price < 0:
+        if self.price is not None and self.price < 0:
             raise ValidationError({
                 "price": _("Price cannot be negative.")
             })

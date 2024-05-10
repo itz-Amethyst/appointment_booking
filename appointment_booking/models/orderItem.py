@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import get_user_model
 from appointment_booking.models.order import Order
 from appointment_booking.models.booking import Booking
 import uuid

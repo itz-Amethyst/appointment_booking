@@ -1,11 +1,11 @@
 import os
 
 from kernel.settings.base.settings import *
-from kernel.settings.config.setup import env, BASE_DIR_FOR_UPLOAD
+from kernel.settings.config.setup import env, BASE_DIR
 
 
-
-public_root = os.path.join(BASE_DIR_FOR_UPLOAD, 'public')
+#! Only for this project purpose by default it should be Upload path!!!
+public_root = os.path.join(BASE_DIR, 'public')
 
 MEDIA_ROOT = os.path.join(public_root, 'media')
 MEDIA_URL = env.str('MEDIA_URL', default='media/')
