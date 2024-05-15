@@ -1,11 +1,10 @@
 import uuid
 import os
-
-# from appointment_booking.models.generic_picture import Generic_Picture
+from django.db import models
 
 
 # Custom function to generate the upload path
-def get_upload_path(instance: "Generic_Picture", filename: str) -> str:
+def get_upload_path(instance: models.Model, filename: str) -> str:
     """
     Returns the upload path for the image based on the content type and object ID.
 
@@ -16,6 +15,11 @@ def get_upload_path(instance: "Generic_Picture", filename: str) -> str:
     Returns:
         str: The constructed upload path.
     """
+    # Validity check
+    from appointment_booking.models.generic_picture import Generic_Picture
+    if not isinstance(instance, Generic_Picture):
+        raise ValueError("Instance must be an instance of Generic_Picture or its subclass.")
+
     # Split the filename to get the base name and extension
     base_name, ext = os.path.splitext(filename)
 
