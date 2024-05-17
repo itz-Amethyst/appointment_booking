@@ -1,7 +1,7 @@
 # 🐍 Django Appointment Booking 🗓️
 
 ## Overview
-This project built upon Django with Docker for local development and Celery Beat for periodic task scheduling. Follow this instructions for setting up the project, building Docker images, running Django, and configuring Celery Beat.
+This project built upon Django with Docker for local development. Follow this instructions for setting up the project, building Docker images, running Django.
 
 
 ### 1. Install Dependencies
@@ -14,36 +14,28 @@ pip install -r requirements.txt
 To build the Docker image:
 
 ```bash
-docker build -t my-django-app .
+docker build appointment-booking .
 ```
 To run the Docker container:
 
 ```bash
-docker run -p 8000:8000 my-django-app
+docker run -p 8000:8000 appointment-booking
 ```
+OR
+
+```bash
+docker-compose up -d
+```
+
+Access the project through this url:
+
+`http://localhost:8000/`
 
 ### 3. Running the Django Project
 After running the Docker container, you can open the Django project at:
 ```
 http://localhost:8000
 ```
-
-### 4. Setting up Celery Beat
-To set up Celery Beat with periodic tasks, run the following command:
-
-```bash
-python manage.py <your_celery_beat_command>
-```
-
-Running Django Commands in Docker
-To run Django management commands within the Docker container:
-
-```
-bash
-docker exec -it <container-name> python manage.py <command>
-```
-
-Replace <container-name> with the name or ID of your running container, and <command> with the Django command you want to run.
 
 ## Running locally
 
