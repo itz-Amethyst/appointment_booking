@@ -25,6 +25,7 @@ REST_FRAMEWORK = {}
 
 MIDDLEWARE = [
     # Can be seperated
+    'kernel.middleware.redirect.RedirectToDocsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
