@@ -9,14 +9,17 @@ services:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USER}
       - POSTGRES_PASSWORD=${DATABASE_PASS}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   django:
     build:
       context: .
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     environment:
-      - DATABASE_URL=psql://postgres:postgres@db:5432/${DATABASE_NAME}
+      - DEBUG=True
+      - DATABASE_URL= postgres://${DATABASE_USER}:${DATABASE_PASS}@db:5432/${DATABASE_NAME}
     volumes:
       - .:/app
     ports:
@@ -24,3 +27,6 @@ services:
     depends_on:
       - db
     restart: on-failure
+
+volumes:
+  pgdata:
