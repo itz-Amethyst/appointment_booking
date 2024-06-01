@@ -65,7 +65,8 @@ class Category(CoreModel):
         """
         Update the total_services count based on the number of associated services.
         """
-        self.total_services = self.services.count()  # Get the count of associated services
+        # Todo: find a sufficient way to +1 , -1 just for the first to use query
+        self.total_services = self.services.count()
 
     def clean(self) -> None:
         """

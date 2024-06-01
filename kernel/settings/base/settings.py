@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'rest_framework' ,
     'djoser' ,
+    "django_redis",
 
     # Internal
     'core',
