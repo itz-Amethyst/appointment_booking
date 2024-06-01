@@ -4,6 +4,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Q
 from typing import List, Dict
+
+from appointment_booking.models.helper.caching import get_cached_count
 # from my_app.managers import CompanyManager  # Custom manager
 
 from core.models.core import CoreModel
@@ -86,6 +88,17 @@ class Company(CoreModel):
             raise ValidationError({"total_book": _("Total book count cannot be negative.")})
 
         super().clean()
+
+    def update_statistics(self):
+        """
+        Update the branch_count, staff_count, and total_books for the company.
+        """
+
+        self.branch_count = get_cached_count(self , "branch_count" , self.locations.objects.filter(company_id = self.pk).only('id'))
+        self.staff_count = get_cached_count(self , "staff_count" , self.staff_times.objects.filter(company_id = self.pk).only('id'))
+        self.total_books = get_cached_count(self , "total_books" ,self.bookings.objects.filter(main_id = self.pk , is_canceled = False).only('id'))
+
+        self.save(update_fields = ['branch_count' , 'staff_count' , 'total_books'])
 
     def save(self, *args: List, **kwargs: Dict) -> None:
         """
