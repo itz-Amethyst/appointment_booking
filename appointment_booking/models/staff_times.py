@@ -25,6 +25,14 @@ class Staff_Times(CoreModel):
         db_column="user_id",
     )
 
+    company_id = models.ForeignKey(
+        'Company' ,
+        on_delete = models.CASCADE ,
+        verbose_name = _("Main Company") ,
+        help_text = _("The company this staff member belongs to.") ,
+        related_name = "staff_times"
+    )
+
     working_hours: JSONField = models.JSONField(
         verbose_name=_("Working Hours"),
         help_text=_("Working hours for each day of the week."),
@@ -72,6 +80,11 @@ class Staff_Times(CoreModel):
         if not self.working_hours:
             raise ValidationError({
                 "working_hours": _("At least one day must be specified in `working_hours`.")
+            })
+
+        if not self.company_id:
+            raise ValidationError({
+                "company_id": _("company_id must be set.")
             })
 
         # required_days = ["sunday", "monday", "tuesday", "wednesday", "saturday"]
