@@ -19,7 +19,7 @@ urlpatterns = [
     path("account/" , include("core.api.routers.jwt")) ,
     re_path(r"^auth/jwt/create/?" , Custom.as_view() , name = "jwt-create") ,
     # path("profile/" , include("core.api.routers.profile")) ,
-    path("appointment_booking/" , include("appointment_booking.api.routers.booking")),
+    path("appointment_booking/" , include("appointment_booking.api.routers.general")),
     path("general/", include("kernel.general.routers.main")),
 
 

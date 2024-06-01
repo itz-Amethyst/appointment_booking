@@ -1,3 +1,5 @@
 from .booking import BookingSerializer
 from .create_booking import CreateBookingSerializer
 from .create_booking_user_logged_in import BookingWithoutUserCredentialsSerializer
+from .branch import BranchSerializer
+from .category import CategorySerializer
